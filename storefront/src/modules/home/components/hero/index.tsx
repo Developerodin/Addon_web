@@ -26,9 +26,10 @@ const Hero = () => {
 
           <Heading
             level="h1"
-            className="text-6xl leading-10 text-white font-normal mt-10 mb-5"
+            className="text-4xl small:text-6xl leading-normal small:leading-tight text-white font-normal mt-10 mb-5"
           >
-            Addon Holdings
+            <span className="inline-block">Addon</span>{" "}
+            <span className="inline-block mt-2 small:mt-0">Holdings</span>
           </Heading>
 
           <p className="leading-10 text-white font-normal text-lg">
