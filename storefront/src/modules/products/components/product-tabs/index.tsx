@@ -23,7 +23,11 @@ const ProductTabs = ({ product }: ProductTabsProps) => {
 
   return (
     <div className="w-full">
-      <Accordion type="multiple" className="flex flex-col gap-y-2">
+      <Accordion 
+        type="multiple" 
+        className="flex flex-col gap-y-2"
+        defaultValue={["Description", "Specifications"]}
+      >
         {tabs.map((tab, i) => (
           <Accordion.Item
             className="bg-neutral-100 small:px-24 px-6"

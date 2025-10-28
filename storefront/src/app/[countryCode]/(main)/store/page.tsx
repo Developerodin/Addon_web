@@ -43,8 +43,6 @@ export default async function StorePage(props: Params) {
 
   // Parse metadata filters from search params
   const metadataFilters = parseMetadataFilters(searchParams as Record<string, string>)
-  console.log('Store page - Parsed metadata filters:', metadataFilters)
-  console.log('Store page - Search params:', searchParams)
 
   return (
     <div className="bg-neutral-100">

@@ -58,23 +58,15 @@ export const filterProductsByMetadata = (
     return products
   }
 
-  console.log('filterProductsByMetadata called with filters:', filters)
-
   return products.filter((product) => {
-    if (!product.metadata) {
-      console.log(`Product ${product.id} has no metadata`)
-      return false
-    }
+    if (!product.metadata) return false
 
-    const matches = Object.entries(filters).every(([filterKey, filterValues]) => {
+    return Object.entries(filters).every(([filterKey, filterValues]) => {
       if (filterValues.length === 0) return true
 
       const productValue = product.metadata?.[filterKey]
       
-      if (!productValue) {
-        console.log(`Product ${product.id} doesn't have metadata key: ${filterKey}`)
-        return false
-      }
+      if (!productValue) return false
 
       // Handle case where metadata value might be an object or array
       const normalizedProductValue = 
@@ -85,22 +77,10 @@ export const filterProductsByMetadata = (
             : String(productValue)
 
       // Check if any of the filter values match (case-insensitive)
-      const match = filterValues.some(filterValue => 
+      return filterValues.some(filterValue => 
         normalizedProductValue.toLowerCase() === filterValue.toLowerCase()
       )
-
-      if (!match) {
-        console.log(`Product ${product.id} - ${filterKey}: ${normalizedProductValue} doesn't match ${filterValues.join(',')}`)
-      }
-
-      return match
     })
-
-    if (matches) {
-      console.log(`Product ${product.id} matches all filters`)
-    }
-
-    return matches
   })
 }
 

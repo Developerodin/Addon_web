@@ -1,6 +1,7 @@
 import { listCategories } from "@/lib/data/categories"
 import { listCollections } from "@/lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
+import { Envelope, Phone } from "@medusajs/icons"
 
 import LocalizedClientLink from "@/modules/common/components/localized-client-link"
 import MedusaCTA from "@/modules/layout/components/medusa-cta"
@@ -19,15 +20,33 @@ export default async function Footer() {
     <footer className="border-t border-ui-border-base w-full">
       <div className="content-container flex flex-col w-full">
         <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
+          <div className="flex flex-col gap-y-4">
             <LocalizedClientLink
               href="/"
               className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
             >
               Addon Holdings
             </LocalizedClientLink>
+            
+            {/* Contact Information */}
+            <div className="flex flex-col gap-y-3">
+              <a 
+                href="tel:+91 2240140386"
+                className="flex items-center gap-2 text-ui-fg-subtle hover:text-ui-fg-base txt-small"
+              >
+                <Phone className="w-4 h-4" />
+                <span>+91 2240140386</span>
+              </a>
+              <a 
+                href="mailto:addon_helpdesk@addbr.com"
+                className="flex items-center gap-2 text-ui-fg-subtle hover:text-ui-fg-base txt-small"
+              >
+                <Envelope className="w-4 h-4" />
+                <span>addon_helpdesk@addbr.com</span>
+              </a>
+            </div>
           </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
+          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
             {product_categories && product_categories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
@@ -112,41 +131,68 @@ export default async function Footer() {
                 </ul>
               </div>
             )}
-            {/* <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Medusa</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
+            <div className="flex flex-col gap-y-2">
+              <span className="txt-small-plus txt-ui-fg-base">
+                Information
+              </span>
+              <ul className="grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small">
                 <li>
-                  <a
-                    href="https://github.com/medusajs"
-                    target="_blank"
-                    rel="noreferrer"
+                  <LocalizedClientLink
                     className="hover:text-ui-fg-base"
+                    href="/about"
                   >
-                    GitHub
-                  </a>
+                    About Us
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="https://docs.medusajs.com"
-                    target="_blank"
-                    rel="noreferrer"
+                  <LocalizedClientLink
                     className="hover:text-ui-fg-base"
+                    href="/terms"
                   >
-                    Documentation
-                  </a>
+                    Terms & Conditions
+                  </LocalizedClientLink>
                 </li>
                 <li>
-                  <a
-                    href="https://github.com/medusajs/b2b-starter-medusa"
-                    target="_blank"
-                    rel="noreferrer"
+                  <LocalizedClientLink
                     className="hover:text-ui-fg-base"
+                    href="/privacy"
                   >
-                    Source code
-                  </a>
+                    Privacy Policy
+                  </LocalizedClientLink>
                 </li>
               </ul>
-            </div> */}
+            </div>
+            <div className="flex flex-col gap-y-2">
+              <span className="txt-small-plus txt-ui-fg-base">
+                Policies
+              </span>
+              <ul className="grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small">
+                <li>
+                  <LocalizedClientLink
+                    className="hover:text-ui-fg-base"
+                    href="/disclaimer"
+                  >
+                    Disclaimer
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    className="hover:text-ui-fg-base"
+                    href="/cancellation"
+                  >
+                    Cancellation Policy
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    className="hover:text-ui-fg-base"
+                    href="/shipping"
+                  >
+                    Shipping Policy
+                  </LocalizedClientLink>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div className="flex w-full mb-16 justify-between text-ui-fg-muted">

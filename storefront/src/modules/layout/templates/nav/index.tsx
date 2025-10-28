@@ -39,6 +39,22 @@ export async function NavigationHeader() {
                     <MegaMenuWrapper />
                   </Suspense>
                 </li>
+                <li>
+                  <LocalizedClientLink
+                    className="hover:text-ui-fg-base hover:bg-neutral-100 rounded-full px-3 py-2"
+                    href="/about"
+                  >
+                    About Us
+                  </LocalizedClientLink>
+                </li>
+                <li>
+                  <LocalizedClientLink
+                    className="hover:text-ui-fg-base hover:bg-neutral-100 rounded-full px-3 py-2"
+                    href="/contact"
+                  >
+                    Contact Us
+                  </LocalizedClientLink>
+                </li>
               </ul>
             </nav>
           </div>
