@@ -1,4 +1,5 @@
 import { retrieveCart } from "@/lib/data/cart"
+import { listCategories } from "@/lib/data/categories"
 import { retrieveCustomer } from "@/lib/data/customer"
 import AccountButton from "@/modules/account/components/account-button"
 import CartButton from "@/modules/cart/components/cart-button"
@@ -6,6 +7,7 @@ import LocalizedClientLink from "@/modules/common/components/localized-client-li
 import FilePlus from "@/modules/common/icons/file-plus"
 import LogoIcon from "@/modules/common/icons/logo"
 import { MegaMenuWrapper } from "@/modules/layout/components/mega-menu"
+import MobileMenu from "@/modules/layout/components/mobile-menu"
 import SearchBar from "@/modules/layout/components/search-bar"
 import { RequestQuoteConfirmation } from "@/modules/quotes/components/request-quote-confirmation"
 import { RequestQuotePrompt } from "@/modules/quotes/components/request-quote-prompt"
@@ -17,12 +19,15 @@ import { Suspense } from "react"
 export async function NavigationHeader() {
   const customer = await retrieveCustomer().catch(() => null)
   const cart = await retrieveCart()
+  const categories = await listCategories().catch(() => [])
 
   return (
     <div className="sticky top-0 inset-x-0 group bg-white text-zinc-900 small:p-4 p-2 text-sm border-b duration-200 border-ui-border-base z-50">
       <header className="flex w-full content-container relative small:mx-auto justify-between">
         <div className="small:mx-auto flex justify-between items-center min-w-full">
           <div className="flex items-center small:space-x-4">
+            <MobileMenu categories={categories} />
+            
             <LocalizedClientLink
               className="hover:text-ui-fg-base flex items-center w-fit"
               href="/"

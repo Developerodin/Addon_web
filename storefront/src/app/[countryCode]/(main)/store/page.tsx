@@ -4,6 +4,7 @@ import { getAllProducts } from "@/lib/data/products"
 import SkeletonProductGrid from "@/modules/skeletons/templates/skeleton-product-grid"
 import RefinementList from "@/modules/store/components/refinement-list"
 import { SortOptions } from "@/modules/store/components/refinement-list/sort-products"
+import MobileFiltersWrapper from "@/modules/store/components/mobile-filters-wrapper"
 import StoreBreadcrumb from "@/modules/store/components/store-breadcrumb"
 import PaginatedProducts from "@/modules/store/templates/paginated-products"
 import { Metadata } from "next"
@@ -51,7 +52,12 @@ export default async function StorePage(props: Params) {
         className="flex flex-col py-6 content-container gap-4"
         data-testid="category-container"
       >
-        <StoreBreadcrumb />
+        <div className="flex justify-between items-center">
+          <StoreBreadcrumb />
+          <div className="small:hidden">
+            <MobileFiltersWrapper sortBy={sort} allProducts={allProducts} />
+          </div>
+        </div>
         <div className="flex flex-col small:flex-row small:items-start gap-3">
           <RefinementList sortBy={sort} categories={categories} allProducts={allProducts} />
           <div className="w-full">

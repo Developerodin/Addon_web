@@ -47,25 +47,39 @@ const RefinementList = ({
   }
 
   return (
-    <div className="flex flex-col divide-neutral-200 small:w-1/5 w-full gap-3">
-      <Container className="flex flex-col divide-y divide-neutral-200 p-0 w-full">
+    <>
+      {/* Desktop View - All filters visible */}
+      <div className="hidden small:flex flex-col divide-neutral-200 small:w-1/5 w-full gap-3">
+        <Container className="flex flex-col divide-y divide-neutral-200 p-0 w-full">
+          <SearchInResults listName={listName} />
+          <SortProducts
+            sortBy={sortBy}
+            setQueryParams={setQueryParams}
+            data-testid={dataTestId}
+          />
+        </Container>
+        {categories && (
+          <CategoryList
+            categories={categories}
+            currentCategory={currentCategory}
+          />
+        )}
+        {allProducts && allProducts.length > 0 && (
+          <MetadataFiltersClient allProducts={allProducts} />
+        )}
+      </div>
+
+      {/* Mobile View - Search and categories visible */}
+      <div className="flex small:hidden flex-col divide-neutral-200 w-full gap-3">
         <SearchInResults listName={listName} />
-        <SortProducts
-          sortBy={sortBy}
-          setQueryParams={setQueryParams}
-          data-testid={dataTestId}
-        />
-      </Container>
-      {categories && (
-        <CategoryList
-          categories={categories}
-          currentCategory={currentCategory}
-        />
-      )}
-      {allProducts && allProducts.length > 0 && (
-        <MetadataFiltersClient allProducts={allProducts} />
-      )}
-    </div>
+        {categories && (
+          <CategoryList
+            categories={categories}
+            currentCategory={currentCategory}
+          />
+        )}
+      </div>
+    </>
   )
 }
 
