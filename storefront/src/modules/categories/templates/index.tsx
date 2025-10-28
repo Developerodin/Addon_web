@@ -10,6 +10,7 @@ import { HttpTypes } from "@medusajs/types"
 import { Container, Text } from "@medusajs/ui"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
+import { parseMetadataFilters } from "@/lib/util/metadata-filters"
 
 export default function CategoryTemplate({
   categories,
@@ -17,12 +18,16 @@ export default function CategoryTemplate({
   sortBy,
   page,
   countryCode,
+  metadataFilters = {},
+  allProducts = [],
 }: {
   categories: HttpTypes.StoreProductCategory[]
   currentCategory: HttpTypes.StoreProductCategory
   sortBy?: SortOptions
   page?: string
   countryCode: string
+  metadataFilters?: Record<string, string[]>
+  allProducts?: HttpTypes.StoreProduct[]
 }) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
@@ -46,6 +51,7 @@ export default function CategoryTemplate({
             currentCategory={currentCategory}
             listName={currentCategory.name}
             data-testid="sort-by-container"
+            allProducts={allProducts}
           />
           <div className="w-full">
             {currentCategory.products?.length === 0 ? (
@@ -76,6 +82,7 @@ export default function CategoryTemplate({
                   page={pageNumber}
                   categoryId={currentCategory.id}
                   countryCode={countryCode}
+                  metadataFilters={metadataFilters}
                 />
               </Suspense>
             )}

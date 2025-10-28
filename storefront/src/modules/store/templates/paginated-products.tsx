@@ -1,10 +1,12 @@
-import { listProductsWithSort } from "@/lib/data/products"
+import { listProductsWithSort, listProducts } from "@/lib/data/products"
 import { getRegion } from "@/lib/data/regions"
 import ProductPreview from "@/modules/products/components/product-preview"
 import { Pagination } from "@/modules/store/components/pagination"
 import { SortOptions } from "@/modules/store/components/refinement-list/sort-products"
 import { B2BCustomer } from "@/types"
 import { Container } from "@medusajs/ui"
+import { filterProductsByMetadata, MetadataFilters } from "@/lib/util/metadata-filters"
+import { sortProducts } from "@/lib/util/sort-products"
 
 const PRODUCT_LIMIT = 12
 
@@ -25,6 +27,7 @@ export default async function PaginatedProducts({
   productsIds,
   countryCode,
   customer,
+  metadataFilters = {},
 }: {
   sortBy?: SortOptions
   page: number
@@ -33,6 +36,7 @@ export default async function PaginatedProducts({
   productsIds?: string[]
   countryCode: string
   customer?: B2BCustomer | null
+  metadataFilters?: MetadataFilters
 }) {
   const queryParams: PaginatedProductsParams = {
     limit: 12,
@@ -58,14 +62,57 @@ export default async function PaginatedProducts({
     return null
   }
 
-  let {
-    response: { products, count },
-  } = await listProductsWithSort({
-    page,
-    queryParams,
-    sortBy,
-    countryCode,
-  })
+  // Check if we need to apply metadata filters
+  const hasMetadataFilters = Object.keys(metadataFilters).length > 0
+
+  let products: any[]
+  let count: number
+
+  if (hasMetadataFilters) {
+    console.log('Applying metadata filters:', metadataFilters)
+    
+    // Fetch all products (up to 1000) and apply filters client-side
+    const {
+      response: { products: allProducts, count: totalCount },
+    } = await listProducts({
+      pageParam: 1, // Start from page 1
+      queryParams: {
+        ...queryParams,
+        limit: 1000, // Fetch more products for metadata filtering
+      },
+      countryCode,
+    })
+
+    console.log(`Fetched ${allProducts.length} products before filtering`)
+
+    // Sort the products first
+    const sortedProducts = sortProducts(allProducts, sortBy)
+
+    // Apply metadata filters
+    const filteredProducts = filterProductsByMetadata(sortedProducts, metadataFilters)
+    count = filteredProducts.length
+    
+    console.log(`After filtering: ${count} products`)
+    
+    // Apply pagination to filtered results
+    const pageParam = (page - 1) * PRODUCT_LIMIT
+    products = filteredProducts.slice(pageParam, pageParam + PRODUCT_LIMIT)
+    
+    console.log(`After pagination: ${products.length} products for page ${page}`)
+  } else {
+    // No metadata filters, paginate normally using the API
+    const {
+      response: { products: paginatedProducts, count: totalCount },
+    } = await listProductsWithSort({
+      page,
+      queryParams,
+      sortBy,
+      countryCode,
+    })
+
+    products = paginatedProducts
+    count = totalCount
+  }
 
   const totalPages = Math.ceil(count / PRODUCT_LIMIT)
 

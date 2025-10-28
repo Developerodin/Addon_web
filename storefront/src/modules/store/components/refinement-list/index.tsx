@@ -8,6 +8,7 @@ import { Container } from "@medusajs/ui"
 import SearchInResults from "./search-in-results"
 import { HttpTypes } from "@medusajs/types"
 import CategoryList from "./category-list"
+import MetadataFiltersClient from "./metadata-filters"
 
 type RefinementListProps = {
   sortBy: SortOptions
@@ -15,6 +16,7 @@ type RefinementListProps = {
   "data-testid"?: string
   categories?: HttpTypes.StoreProductCategory[]
   currentCategory?: HttpTypes.StoreProductCategory
+  allProducts?: HttpTypes.StoreProduct[]
 }
 
 const RefinementList = ({
@@ -23,6 +25,7 @@ const RefinementList = ({
   "data-testid": dataTestId,
   categories,
   currentCategory,
+  allProducts,
 }: RefinementListProps) => {
   const router = useRouter()
   const pathname = usePathname()
@@ -58,6 +61,9 @@ const RefinementList = ({
           categories={categories}
           currentCategory={currentCategory}
         />
+      )}
+      {allProducts && allProducts.length > 0 && (
+        <MetadataFiltersClient allProducts={allProducts} />
       )}
     </div>
   )

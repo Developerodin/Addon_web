@@ -1,9 +1,11 @@
 import { getCategoryByHandle, listCategories } from "@/lib/data/categories"
+import { getAllProductsByCategory } from "@/lib/data/products"
 import { listRegions } from "@/lib/data/regions"
 import CategoryTemplate from "@/modules/categories/templates"
 import { SortOptions } from "@/modules/store/components/refinement-list/sort-products"
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { parseMetadataFilters } from "@/lib/util/metadata-filters"
 
 export const dynamicParams = true
 
@@ -77,6 +79,12 @@ export default async function CategoryPage(props: Props) {
     notFound()
   }
 
+  // Fetch all products for this category for metadata filters
+  const allProducts = await getAllProductsByCategory(currentCategory.id, params.countryCode)
+
+  // Parse metadata filters from search params
+  const metadataFilters = parseMetadataFilters(searchParams as Record<string, string>)
+
   return (
     <CategoryTemplate
       categories={categories}
@@ -84,6 +92,8 @@ export default async function CategoryPage(props: Props) {
       sortBy={sortBy}
       page={page}
       countryCode={params.countryCode}
+      metadataFilters={metadataFilters}
+      allProducts={allProducts}
     />
   )
 }
