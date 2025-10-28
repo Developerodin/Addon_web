@@ -54,7 +54,7 @@ export const listApprovals = async ({
       headers,
       next,
       credentials: "include",
-      cache: "force-cache",
+      cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
     }
   )
 

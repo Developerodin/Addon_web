@@ -69,6 +69,9 @@ export default async function seedDemoData({ container }: ExecArgs) {
         supported_currencies: [
           {
             currency_code: "eur",
+          },
+          {
+            currency_code: "inr",
             is_default: true,
           },
           {
@@ -84,9 +87,21 @@ export default async function seedDemoData({ container }: ExecArgs) {
     input: {
       regions: [
         {
+          name: "India",
+          currency_code: "inr",
+          countries: ["in"],
+          payment_providers: ["pp_system_default"],
+        },
+        {
           name: "Europe",
           currency_code: "eur",
           countries,
+          payment_providers: ["pp_system_default"],
+        },
+        {
+          name: "United States",
+          currency_code: "usd",
+          countries: ["us"],
           payment_providers: ["pp_system_default"],
         },
       ],
@@ -97,9 +112,13 @@ export default async function seedDemoData({ container }: ExecArgs) {
 
   logger.info("Seeding tax regions...");
   await createTaxRegionsWorkflow(container).run({
-    input: countries.map((country_code) => ({
-      country_code,
-    })),
+    input: [
+      { country_code: "in" },
+      ...countries.map((country_code) => ({
+        country_code,
+      })),
+      { country_code: "us" },
+    ],
   });
   logger.info("Finished seeding tax regions.");
 
