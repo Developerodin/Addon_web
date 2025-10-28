@@ -14,6 +14,7 @@ type Props = {
   searchParams: Promise<{
     sortBy?: SortOptions
     page?: string
+    q?: string
   }>
 }
 
@@ -67,7 +68,7 @@ export async function generateStaticParams() {
 export default async function CategoryPage(props: Props) {
   const searchParams = await props.searchParams
   const params = await props.params
-  const { sortBy, page } = searchParams
+  const { sortBy, page, q } = searchParams
 
   const categories = await listCategories()
 
@@ -94,6 +95,7 @@ export default async function CategoryPage(props: Props) {
       countryCode={params.countryCode}
       metadataFilters={metadataFilters}
       allProducts={allProducts}
+      searchQuery={q}
     />
   )
 }

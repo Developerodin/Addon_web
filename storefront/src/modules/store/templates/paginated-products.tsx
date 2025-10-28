@@ -28,6 +28,7 @@ export default async function PaginatedProducts({
   countryCode,
   customer,
   metadataFilters = {},
+  searchQuery,
 }: {
   sortBy?: SortOptions
   page: number
@@ -37,6 +38,7 @@ export default async function PaginatedProducts({
   countryCode: string
   customer?: B2BCustomer | null
   metadataFilters?: MetadataFilters
+  searchQuery?: string
 }) {
   const queryParams: PaginatedProductsParams = {
     limit: 12,
@@ -62,13 +64,14 @@ export default async function PaginatedProducts({
     return null
   }
 
-  // Check if we need to apply metadata filters
+  // Check if we need to apply metadata filters or search query
   const hasMetadataFilters = Object.keys(metadataFilters).length > 0
+  const hasSearchQuery = searchQuery && searchQuery.trim().length > 0
 
   let products: any[]
   let count: number
 
-  if (hasMetadataFilters) {
+  if (hasMetadataFilters || hasSearchQuery) {
     // Fetch all products (up to 1000) and apply filters client-side
     const {
       response: { products: allProducts, count: totalCount },
@@ -84,8 +87,27 @@ export default async function PaginatedProducts({
     // Sort the products first
     const sortedProducts = sortProducts(allProducts, sortBy)
 
+    // Apply search filter if query exists
+    let filteredProducts = sortedProducts
+    if (hasSearchQuery) {
+      const searchLower = searchQuery!.toLowerCase()
+      filteredProducts = sortedProducts.filter((product) => {
+        const title = product.title?.toLowerCase() || ""
+        const description = product.description?.toLowerCase() || ""
+        const handle = product.handle?.toLowerCase() || ""
+        return (
+          title.includes(searchLower) ||
+          description.includes(searchLower) ||
+          handle.includes(searchLower)
+        )
+      })
+    }
+
     // Apply metadata filters
-    const filteredProducts = filterProductsByMetadata(sortedProducts, metadataFilters)
+    if (hasMetadataFilters) {
+      filteredProducts = filterProductsByMetadata(filteredProducts, metadataFilters)
+    }
+    
     count = filteredProducts.length
     
     // Apply pagination to filtered results

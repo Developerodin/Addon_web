@@ -20,6 +20,7 @@ export default function CategoryTemplate({
   countryCode,
   metadataFilters = {},
   allProducts = [],
+  searchQuery,
 }: {
   categories: HttpTypes.StoreProductCategory[]
   currentCategory: HttpTypes.StoreProductCategory
@@ -28,6 +29,7 @@ export default function CategoryTemplate({
   countryCode: string
   metadataFilters?: Record<string, string[]>
   allProducts?: HttpTypes.StoreProduct[]
+  searchQuery?: string
 }) {
   const pageNumber = page ? parseInt(page) : 1
   const sort = sortBy || "created_at"
@@ -83,6 +85,7 @@ export default function CategoryTemplate({
                   categoryId={currentCategory.id}
                   countryCode={countryCode}
                   metadataFilters={metadataFilters}
+                  searchQuery={searchQuery}
                 />
               </Suspense>
             )}
