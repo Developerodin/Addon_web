@@ -8,15 +8,38 @@ type ConvertToLocaleParams = {
   locale?: string
 }
 
+// Map currency codes to appropriate locales for proper formatting
+const currencyToLocaleMap: Record<string, string> = {
+  inr: "en-IN",
+  eur: "en-IE",
+  gbp: "en-GB",
+  jpy: "ja-JP",
+  cny: "zh-CN",
+  krw: "ko-KR",
+  usd: "en-US",
+  cad: "en-CA",
+  aud: "en-AU",
+  nzd: "en-NZ",
+}
+
+// Get appropriate locale for currency code, default to en-US if not found
+const getLocaleForCurrency = (currency_code: string): string => {
+  const code = currency_code.toLowerCase()
+  return currencyToLocaleMap[code] || "en-US"
+}
+
 export const convertToLocale = ({
   amount,
   currency_code,
   minimumFractionDigits,
   maximumFractionDigits,
-  locale = "en-US",
+  locale,
 }: ConvertToLocaleParams) => {
+  // Use provided locale or determine from currency code
+  const finalLocale = locale || getLocaleForCurrency(currency_code)
+  
   return currency_code && !isEmpty(currency_code)
-    ? new Intl.NumberFormat(locale, {
+    ? new Intl.NumberFormat(finalLocale, {
         style: "currency",
         currency: currency_code,
         minimumFractionDigits,
