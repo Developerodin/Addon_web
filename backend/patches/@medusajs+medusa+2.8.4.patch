@@ -1,0 +1,13 @@
+diff --git a/node_modules/@medusajs/medusa/dist/loaders/admin.js b/node_modules/@medusajs/medusa/dist/loaders/admin.js
+index 959eac7..e25824c 100644
+--- a/node_modules/@medusajs/medusa/dist/loaders/admin.js
++++ b/node_modules/@medusajs/medusa/dist/loaders/admin.js
+@@ -28,7 +28,7 @@ async function adminLoader({ app, configModule, rootDirectory, plugins, }) {
+         sources,
+         plugins: pluginAdminPaths,
+         ...admin,
+-        outDir: path_1.default.join(rootDirectory, utils_1.ADMIN_RELATIVE_OUTPUT_DIR),
++        outDir: admin?.outDir ? (path_1.default.isAbsolute(admin.outDir) ? admin.outDir : path_1.default.join(rootDirectory, admin.outDir)) : path_1.default.join(rootDirectory, utils_1.ADMIN_RELATIVE_OUTPUT_DIR),
+     };
+     if (adminOptions?.disable) {
+         return app;
