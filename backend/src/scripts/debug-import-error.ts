@@ -14,9 +14,9 @@ export default async function debugImportError({ container }: ExecArgs) {
     console.log("═══════════════════════════════════════════\n");
     
     // Try to query using entity manager
-    const manager = container.resolve("manager");
+    const manager = container.resolve("manager") as any;
     
-    if (manager) {
+    if (manager && manager.connection) {
       const queryRunner = manager.connection.createQueryRunner();
       
       try {
@@ -76,6 +76,6 @@ export default async function debugImportError({ container }: ExecArgs) {
     }
   } catch (error) {
     console.error("\nError querying jobs:", error);
-    logger.error("Error querying jobs", { error });
+    logger.error(`Error querying jobs: ${error instanceof Error ? error.message : String(error)}`);
   }
 }

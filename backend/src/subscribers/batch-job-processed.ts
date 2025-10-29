@@ -24,7 +24,7 @@ export default async function batchJobProcessedHandler({
   console.log("Job data:", JSON.stringify(data, null, 2));
   console.log("=========================================\n");
 
-  logger.info("Batch job processed", { data });
+  logger.info(`Batch job processed - ID: ${data.id || "unknown"}, Type: ${data.type || "unknown"}`);
 }
 
 export const config: SubscriberConfig = {

@@ -21,10 +21,7 @@ export default async function importProcessorDebugHandler({
   console.error("Full event:", JSON.stringify(event, null, 2));
   console.error("=========================================\n");
 
-  logger.error("Import debug event", {
-    eventName,
-    event,
-  });
+  logger.error(`Import debug event - Event name: ${eventName}`);
 }
 
 export const config: SubscriberConfig = {

@@ -50,14 +50,9 @@ export default async function batchJobFailedHandler({
   console.error("\nFull error data:", JSON.stringify(data, null, 2));
   console.error("=========================================\n");
 
-  logger.error("Batch job failed", {
-    id: data.id,
-    type: data.type,
-    message: data.message,
-    error: data.error,
-    cause: data.cause,
-    context: data.context,
-  });
+  logger.error(
+    `Batch job failed - ID: ${data.id || "unknown"}, Type: ${data.type || "unknown"}, Message: ${data.message || "none"}`
+  );
 }
 
 export const config: SubscriberConfig = {

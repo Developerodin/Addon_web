@@ -24,9 +24,7 @@ export default async function batchJobSubscriber({
   
   console.error("═══════════════════════════════════════════\n");
   
-  logger.error("Batch job event captured", {
-    event: eventData,
-  });
+  logger.error(`Batch job event captured - Type: ${eventData.type || eventData.name || "unknown"}`);
 }
 
 export const config: SubscriberConfig = {

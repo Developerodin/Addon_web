@@ -46,15 +46,9 @@ export default async function workflowErrorLoggerHandler({
   console.error("Full error data:", JSON.stringify(errorData, null, 2));
   console.error("=========================================\n");
 
-  logger.error("Workflow error", {
-    workflow_id: errorData.workflow_id,
-    execution_id: errorData.execution_id,
-    action: errorData.action,
-    step: errorData.step,
-    error: errorData.error,
-    message: errorData.message,
-    cause: errorData.cause,
-  });
+  logger.error(
+    `Workflow error - Workflow ID: ${errorData.workflow_id || "unknown"}, Action: ${errorData.action || "unknown"}, Step: ${errorData.step || "unknown"}, Message: ${errorData.message || "none"}`
+  );
 }
 
 export const config: SubscriberConfig = {

@@ -31,3 +31,4 @@ const MobileFiltersWrapper = ({ sortBy, allProducts }: MobileFiltersWrapperProps
 export default MobileFiltersWrapper
 
 
+

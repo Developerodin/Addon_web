@@ -53,14 +53,9 @@ export default async function notificationLoggerHandler({
     console.error(JSON.stringify(notificationData, null, 2));
     console.error("\n=========================================\n");
 
-    logger.error("Product import notification sent", {
-      title,
-      description,
-      channel: notificationData.channel,
-      template: notificationData.template,
-      data: notificationData.data,
-      metadata: notificationData.metadata,
-    });
+    logger.error(
+      `Product import notification sent - Title: ${title}, Channel: ${notificationData.channel || "unknown"}, Template: ${notificationData.template || "unknown"}`
+    );
   } else {
     // Log other notifications more briefly
     console.log("\n=========================================");

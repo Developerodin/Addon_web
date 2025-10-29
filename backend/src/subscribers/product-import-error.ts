@@ -39,13 +39,9 @@ export default async function productImportErrorHandler({
   }
   console.error("=========================================\n");
 
-  logger.error("Product import failed", {
-    id: errorData.id,
-    file_name: errorData.file_name,
-    error: errorData.error,
-    description: errorData.description,
-    metadata: errorData.metadata,
-  });
+  logger.error(
+    `Product import failed - ID: ${errorData.id}, File: ${errorData.file_name || "unknown"}, Error: ${errorData.error || errorData.description || "unknown"}`
+  );
 }
 
 export const config: SubscriberConfig = {
