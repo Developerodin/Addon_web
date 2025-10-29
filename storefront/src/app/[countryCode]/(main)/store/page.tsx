@@ -12,6 +12,7 @@ import { Suspense } from "react"
 import { parseMetadataFilters } from "@/lib/util/metadata-filters"
 
 export const dynamicParams = true
+export const revalidate = 0 // Always fetch fresh data, no static caching
 
 export const metadata: Metadata = {
   title: "Store",

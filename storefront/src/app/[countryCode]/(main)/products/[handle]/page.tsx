@@ -7,6 +7,7 @@ import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
 export const dynamicParams = true
+export const revalidate = 0 // Always fetch fresh data, no static caching
 
 type Props = {
   params: { countryCode: string; handle: string }

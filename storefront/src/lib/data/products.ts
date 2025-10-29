@@ -33,8 +33,11 @@ export const getProductsById = async ({
           "*variants,*variants.calculated_price,*variants.inventory_quantity",
       },
       headers,
-      next,
-      cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+      next: {
+        ...next,
+        revalidate: 60, // Revalidate every 60 seconds in production
+      },
+      cache: "no-store", // Always fetch fresh data from backend
     })
     .then(({ products }) => products)
 }
@@ -64,8 +67,11 @@ export const getAllProducts = async (countryCode: string): Promise<HttpTypes.Sto
         fields: "*variants,*variants.calculated_price,*variants.inventory_quantity,+metadata",
       },
       headers,
-      next,
-      cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+      next: {
+        ...next,
+        revalidate: 60, // Revalidate every 60 seconds in production
+      },
+      cache: "no-store", // Always fetch fresh data from backend
     })
     .then(({ products }) => products)
 }
@@ -99,8 +105,11 @@ export const getAllProductsByCategory = async (
         fields: "*variants,*variants.calculated_price,*variants.inventory_quantity,+metadata",
       },
       headers,
-      next,
-      cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+      next: {
+        ...next,
+        revalidate: 60, // Revalidate every 60 seconds in production
+      },
+      cache: "no-store", // Always fetch fresh data from backend
     })
     .then(({ products }) => products)
 }
@@ -125,8 +134,11 @@ export const getProductByHandle = async (handle: string, regionId: string) => {
           "*variants.calculated_price,+variants.inventory_quantity,+metadata,+tags",
       },
       headers,
-      next,
-      cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+      next: {
+        ...next,
+        revalidate: 60, // Revalidate every 60 seconds in production
+      },
+      cache: "no-store", // Always fetch fresh data from backend
     })
     .then(({ products }) => products[0])
 }
@@ -178,8 +190,11 @@ export const listProducts = async ({
           ...queryParams,
         },
         headers,
-        next,
-        cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+        next: {
+          ...next,
+          revalidate: 60, // Revalidate every 60 seconds in production
+        },
+        cache: "no-store", // Always fetch fresh data from backend
       }
     )
     .then(({ products, count }) => {
