@@ -41,6 +41,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "i.etsystatic.com",
       },
+      {
+        protocol: "http",
+        hostname: "www.addonbooking.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.addonbooking.com",
+      },
     ],
   },
 }
