@@ -111,6 +111,24 @@ async function setCacheId(request: NextRequest, response: NextResponse) {
  * Middleware to handle region selection and cache id.
  */
 export async function middleware(request: NextRequest) {
+  // Login enforcement: redirect unauthenticated users to regioned account page
+  const path = request.nextUrl.pathname
+  const segments = path.split("/").filter(Boolean)
+  const isStatic =
+    path.includes(".") ||
+    path.startsWith("/_next/") ||
+    path === "/favicon.ico" ||
+    path.startsWith("/images/") ||
+    path.startsWith("/assets/")
+  const isApi = path.startsWith("/api")
+  const isAccountRoute = segments.length >= 2 && segments[1] === "account"
+  const jwt = request.cookies.get("_medusa_jwt")
+
+  if (!isAccountRoute && !isStatic && !isApi && !jwt) {
+    const countryPrefix = segments.length > 0 ? `/${segments[0]}` : `/${DEFAULT_REGION}`
+    return NextResponse.redirect(new URL(`${countryPrefix}/account`, request.url), 307)
+  }
+
   const searchParams = request.nextUrl.searchParams
   const cartId = searchParams.get("cart_id")
   const checkoutStep = searchParams.get("step")

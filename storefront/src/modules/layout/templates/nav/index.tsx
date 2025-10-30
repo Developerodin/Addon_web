@@ -20,6 +20,7 @@ export async function NavigationHeader() {
   const customer = await retrieveCustomer().catch(() => null)
   const cart = await retrieveCart()
   const categories = await listCategories().catch(() => [])
+  const isLoggedIn = !!customer
 
   return (
     <div className="sticky top-0 inset-x-0 group bg-white text-zinc-900 small:p-4 p-2 text-sm border-b duration-200 border-ui-border-base z-50">
@@ -40,11 +41,13 @@ export async function NavigationHeader() {
 
             <nav>
               <ul className="space-x-4 hidden small:flex">
-                <li>
-                  <Suspense fallback={<SkeletonMegaMenu />}>
-                    <MegaMenuWrapper />
-                  </Suspense>
-                </li>
+                {isLoggedIn && (
+                  <li>
+                    <Suspense fallback={<SkeletonMegaMenu />}>
+                      <MegaMenuWrapper />
+                    </Suspense>
+                  </li>
+                )}
                 <li>
                   <LocalizedClientLink
                     className="hover:text-ui-fg-base hover:bg-neutral-100 rounded-full px-3 py-2"
@@ -65,36 +68,39 @@ export async function NavigationHeader() {
             </nav>
           </div>
           <div className="flex justify-end items-center gap-2">
-            <SearchBar />
+            {isLoggedIn && <SearchBar />}
 
-            <div className="h-4 w-px bg-neutral-300" />
+            {isLoggedIn && <div className="h-4 w-px bg-neutral-300" />}
 
-            {customer && cart?.items && cart.items.length > 0 ? (
-              <RequestQuoteConfirmation>
-                <button
-                  className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-neutral-100 px-2 py-1"
-                  // disabled={isPendingApproval}
-                >
-                  <FilePlus />
-                  <span className="hidden small:inline-block">Quote</span>
-                </button>
-              </RequestQuoteConfirmation>
-            ) : (
-              <RequestQuotePrompt>
-                <button className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-neutral-100 px-2 py-1">
-                  <FilePlus />
-                  <span className="hidden small:inline-block">Quote</span>
-                </button>
-              </RequestQuotePrompt>
+            {isLoggedIn && (
+              customer && cart?.items && cart.items.length > 0 ? (
+                <RequestQuoteConfirmation>
+                  <button
+                    className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-neutral-100 px-2 py-1"
+                  >
+                    <FilePlus />
+                    <span className="hidden small:inline-block">Quote</span>
+                  </button>
+                </RequestQuoteConfirmation>
+              ) : isLoggedIn ? (
+                <RequestQuotePrompt>
+                  <button className="flex gap-1.5 items-center rounded-2xl bg-none shadow-none border-none hover:bg-neutral-100 px-2 py-1">
+                    <FilePlus />
+                    <span className="hidden small:inline-block">Quote</span>
+                  </button>
+                </RequestQuotePrompt>
+              ) : null
             )}
 
             <Suspense fallback={<SkeletonAccountButton />}>
               <AccountButton customer={customer} />
             </Suspense>
 
-            <Suspense fallback={<SkeletonCartButton />}>
-              <CartButton />
-            </Suspense>
+            {isLoggedIn && (
+              <Suspense fallback={<SkeletonCartButton />}>
+                <CartButton />
+              </Suspense>
+            )}
           </div>
         </div>
       </header>
