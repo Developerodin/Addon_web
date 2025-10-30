@@ -47,7 +47,8 @@ const LoginTemplate = ({ regions }: { regions: HttpTypes.StoreRegion[] }) => {
 
   const updateView = (view: LOGIN_VIEW) => {
     setCurrentView(view)
-    router.push(`/account?view=${view}`)
+    // Use current route (includes country code) to avoid duplicating /account
+    router.push(`${route}?view=${view}`)
   }
 
   return (

@@ -121,11 +121,16 @@ export async function middleware(request: NextRequest) {
     path.startsWith("/images/") ||
     path.startsWith("/assets/")
   const isApi = path.startsWith("/api")
-  const isAccountRoute = segments.length >= 2 && segments[1] === "account"
+  // Treat both "/account" and "/{cc}/account" as account routes
+  const isAccountRoute =
+    (segments.length >= 2 && segments[1] === "account") ||
+    (segments.length === 1 && segments[0] === "account")
   const jwt = request.cookies.get("_medusa_jwt")
 
   if (!isAccountRoute && !isStatic && !isApi && !jwt) {
-    const countryPrefix = segments.length > 0 ? `/${segments[0]}` : `/${DEFAULT_REGION}`
+    const first = segments[0]
+    const isTwoLetterCountry = /^[a-z]{2}$/i.test(first ?? "")
+    const countryPrefix = isTwoLetterCountry ? `/${first}` : `/${DEFAULT_REGION}`
     return NextResponse.redirect(new URL(`${countryPrefix}/account`, request.url), 307)
   }
 
