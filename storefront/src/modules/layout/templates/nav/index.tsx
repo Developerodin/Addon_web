@@ -27,7 +27,7 @@ export async function NavigationHeader() {
       <header className="flex w-full content-container relative small:mx-auto justify-between">
         <div className="small:mx-auto flex justify-between items-center min-w-full">
           <div className="flex items-center small:space-x-4">
-            <MobileMenu categories={categories} />
+            {isLoggedIn && <MobileMenu categories={categories} />}
             
             <LocalizedClientLink
               className="hover:text-ui-fg-base flex items-center w-fit"

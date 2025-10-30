@@ -15,13 +15,16 @@ const currencyToLocaleMap: Record<string, string> = {
 }
 
 // Get appropriate locale for currency code, default to en-US if not found
-const getLocaleForCurrency = (currency_code: string): string => {
-  const code = currency_code.toLowerCase()
-  return currencyToLocaleMap[code] || "en-US"
+const getLocaleForCurrency = (currency_code?: string): string => {
+  const code = (currency_code || "").toLowerCase()
+  return (code && currencyToLocaleMap[code]) || "en-US"
 }
 
-export const formatAmount = (amount: number, currency_code: string) => {
+export const formatAmount = (amount: number, currency_code?: string) => {
   const locale = getLocaleForCurrency(currency_code)
+  if (!currency_code) {
+    return new Intl.NumberFormat(locale).format(amount)
+  }
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: currency_code,
@@ -29,7 +32,7 @@ export const formatAmount = (amount: number, currency_code: string) => {
 }
 
 type AmountCellProps = {
-  currencyCode: string
+  currencyCode?: string
   amount?: number | null
   originalAmount?: number | null
   align?: "left" | "right"
@@ -43,7 +46,7 @@ export const AmountCell = ({
   align = "left",
   className,
 }: AmountCellProps) => {
-  const formatted = formatAmount(amount!, currencyCode)
+  const formatted = formatAmount(amount ?? 0, currencyCode)
   const originalAmountPresent = typeof originalAmount === "number"
   const originalAmountDiffers = originalAmount !== amount
   const shouldShowAmountDiff = originalAmountPresent && originalAmountDiffers
@@ -63,7 +66,7 @@ export const AmountCell = ({
       {shouldShowAmountDiff ? (
         <>
           <span className="truncate line-through text-xs">
-            {formatAmount(originalAmount!, currencyCode)}
+            {formatAmount(originalAmount ?? 0, currencyCode)}
           </span>
           <span className="truncate text-blue-400 txt-small">{formatted}</span>
         </>
