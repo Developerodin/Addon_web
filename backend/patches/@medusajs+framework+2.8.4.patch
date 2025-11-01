@@ -1,0 +1,14 @@
+diff --git a/node_modules/@medusajs/framework/dist/http/express-loader.js b/node_modules/@medusajs/framework/dist/http/express-loader.js
+index 0bf633f..ea2728b 100644
+--- a/node_modules/@medusajs/framework/dist/http/express-loader.js
++++ b/node_modules/@medusajs/framework/dist/http/express-loader.js
+@@ -26,7 +26,8 @@ async function expressLoader({ app }) {
+     const isTest = NODE_ENV === "test";
+     let sameSite = false;
+     let secure = false;
+-    if (isProduction || isStaging) {
++    const forceInsecure = process.env.FORCE_INSECURE_COOKIES === "true";
++    if ((isProduction || isStaging) && !forceInsecure) {
+         secure = true;
+         sameSite = "none";
+     }

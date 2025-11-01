@@ -16,7 +16,6 @@
     "build": "medusa build",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "medusa start",
-    "start:dev": "NODE_ENV=development medusa start",
     "dev": "medusa develop",
     "postinstall": "patch-package",
     "test:integration:http": "TEST_TYPE=integration:http NODE_OPTIONS=--experimental-vm-modules jest --silent=false --runInBand --forceExit",

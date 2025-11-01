@@ -3,10 +3,7 @@ import { APPROVAL_MODULE } from "./src/modules/approval";
 import { COMPANY_MODULE } from "./src/modules/company";
 import { loadEnv, defineConfig, Modules } from "@medusajs/framework/utils";
 
-// Default to production for security (EC2 deployment)
-// For local testing, use: yarn start:dev (sets NODE_ENV=development)
-const nodeEnv = process.env.NODE_ENV || "production";
-loadEnv(nodeEnv, process.cwd());
+loadEnv(process.env.NODE_ENV!, process.cwd());
 
 module.exports = defineConfig({
   projectConfig: {
