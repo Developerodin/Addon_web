@@ -22,14 +22,22 @@ module.exports = defineConfig({
   },
   modules: {
     [Modules.FILE]: {
-      resolve: "@medusajs/file-local",
+      resolve: "@medusajs/file",
       options: {
-        // Prefer explicit FILE_BACKEND_URL; else derive from MEDUSA_BACKEND_URL
-        backend_url:
-          process.env.FILE_BACKEND_URL ||
-          `${(process.env.MEDUSA_BACKEND_URL || "http://localhost:9000").replace(/\/$/, "")}/static`,
-        upload_dir: path.join(process.cwd(), "static"),
-        private_upload_dir: path.join(process.cwd(), "static"),
+        providers: [
+          {
+            resolve: "@medusajs/file-local",
+            id: "local",
+            options: {
+              // Prefer explicit FILE_BACKEND_URL; else derive from MEDUSA_BACKEND_URL
+              backend_url:
+                process.env.FILE_BACKEND_URL ||
+                `${(process.env.MEDUSA_BACKEND_URL || "http://localhost:9000").replace(/\/$/, "")}/static`,
+              upload_dir: path.join(process.cwd(), "static"),
+              private_upload_dir: path.join(process.cwd(), "static"),
+            },
+          },
+        ],
       },
     },
     [COMPANY_MODULE]: {
