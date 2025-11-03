@@ -2,6 +2,7 @@ import { QUOTE_MODULE } from "./src/modules/quote";
 import { APPROVAL_MODULE } from "./src/modules/approval";
 import { COMPANY_MODULE } from "./src/modules/company";
 import { loadEnv, defineConfig, Modules } from "@medusajs/framework/utils";
+import path from "path";
 
 loadEnv(process.env.NODE_ENV!, process.cwd());
 
@@ -20,6 +21,17 @@ module.exports = defineConfig({
     outDir: ".medusa/server/public/admin",
   },
   modules: {
+    [Modules.FILE]: {
+      resolve: "@medusajs/file-local",
+      options: {
+        // Prefer explicit FILE_BACKEND_URL; else derive from MEDUSA_BACKEND_URL
+        backend_url:
+          process.env.FILE_BACKEND_URL ||
+          `${(process.env.MEDUSA_BACKEND_URL || "http://localhost:9000").replace(/\/$/, "")}/static`,
+        upload_dir: path.join(process.cwd(), "static"),
+        private_upload_dir: path.join(process.cwd(), "static"),
+      },
+    },
     [COMPANY_MODULE]: {
       resolve: "./modules/company",
     },
