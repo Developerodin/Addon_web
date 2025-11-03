@@ -42,6 +42,11 @@ const nextConfig = {
         hostname: "i.etsystatic.com",
       },
       {
+        protocol: "https",
+        hostname: "shopaddon.theodin.ai",
+        pathname: "/api/static/**",
+      },
+      {
         protocol: "http",
         hostname: "www.addonbooking.com",
       },
